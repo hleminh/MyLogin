@@ -106,7 +106,7 @@ public class SignInFragment extends Fragment {
         etPassword.setText(sharedPreferences.getString("password", ""));
         System.out.println(etUsername.getText());
         System.out.println(etPassword.getText());
-        if(!etUsername.getText().equals("") && !etPassword.getText().equals("")){
+        if(!etUsername.getText().toString().equals("") && !etPassword.getText().toString().equals("")){
             cbRemember.setChecked(true);
         }
     }
