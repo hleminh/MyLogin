@@ -5,7 +5,8 @@
     android:layout_height="200sp"
     android:background="@drawable/fragment_background"
     android:orientation="vertical"
-    tools:context="com.example.hoang.mylogin.fragments.SignInFragment">
+    tools:context="com.example.hoang.mylogin.fragments.SignInFragment"
+    android:focusableInTouchMode="true">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout

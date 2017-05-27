@@ -1,5 +1,7 @@
 package com.example.hoang.mylogin.utils;
 
+import android.util.Patterns;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,23 +10,24 @@ import java.util.regex.Pattern;
  */
 
 public class InputValidator {
-    public static boolean passwordCharValidation(String passwordEd) {
-        String PASSWORD_PATTERN = "^(?=.*[A-Z])(?=.*[@_.]).*$";
+    private static final String PASSWORD_PATTERN = "^(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,10})$";
+    private static final String USERNAME_PATTERN = "(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,20})$";
+
+    public static boolean isValidPassword(String passwordEd) {
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(passwordEd);
-        if ((!passwordEd.matches(".*\\d.*") || !matcher.matches()) && passwordEd.length() >= 8) {
-            return true;
-        }
-        return false;
+        return matcher.matches();
     }
 
-    public static boolean usernameCharValidation(String usernameEd) {
-        String USERNAME_PATTERN = "^(?=.*[A-Z])(?=.*[@_.]).*$";
+    public static boolean isValidUsername(String usernameEd) {
         Pattern pattern = Pattern.compile(USERNAME_PATTERN);
         Matcher matcher = pattern.matcher(usernameEd);
-        if ((!usernameEd.matches(".*\\d.*") || !matcher.matches()) && usernameEd.length() >= 8) {
-            return true;
-        }
-        return false;
+        return matcher.matches();
+    }
+
+    public static boolean isValidEmail(String emailEd) {
+        Pattern pattern = Patterns.EMAIL_ADDRESS;
+        Matcher matcher = pattern.matcher(emailEd);
+        return matcher.matches();
     }
 }

@@ -4,6 +4,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.hoang.mylogin.R;
 import com.example.hoang.mylogin.fragments.SignInFragment;
@@ -40,6 +42,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            View tab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(i);
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tab.getLayoutParams();
+            if (i == 0)
+                p.setMargins(0, 0, 100, 0);
+            if (i == 1)
+                p.setMargins(100, 0, 0, 0);
+            tab.requestLayout();
+        }
         displayStartScreen();
     }
 
