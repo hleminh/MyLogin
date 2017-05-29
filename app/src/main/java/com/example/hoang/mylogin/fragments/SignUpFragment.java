@@ -1,9 +1,9 @@
 package com.example.hoang.mylogin.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.hoang.mylogin.R;
+import com.example.hoang.mylogin.activities.TasksActivity;
 import com.example.hoang.mylogin.networks.RegisterRequest;
 import com.example.hoang.mylogin.networks.RegisterResponse;
 import com.example.hoang.mylogin.networks.RegisterService;
@@ -63,10 +64,10 @@ public class SignUpFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (!InputValidator.isValidUsername(etUsername.getText().toString())) {
-                    etUsername.setError("Username must be between 8-20 characters, contain at least one digit and one alphabetic character, and must not contain special characters.",null);
+                    etUsername.setError("Username must be between 8-20 characters, contain at least one digit and one alphabetic character, and must not contain special characters.", null);
                     flagUsername = false;
                 } else flagUsername = true;
-                if (etUsername.getText().length() == 0){
+                if (etUsername.getText().length() == 0) {
                     flagUsername = false;
                     etUsername.setError(null);
                 }
@@ -89,7 +90,7 @@ public class SignUpFragment extends Fragment {
                     flagPassword = false;
                     etPassword.setError("Password must be between 8-10 characters, contain at least one digit and one alphabetic character, and must not contain special characters.", null);
                 } else flagPassword = true;
-                if (etPassword.getText().length() == 0){
+                if (etPassword.getText().length() == 0) {
                     flagPassword = false;
                     etPassword.setError(null);
                 }
@@ -113,7 +114,7 @@ public class SignUpFragment extends Fragment {
                     flagEmail = false;
                     etEmail.setError("Invalid e-mail address.", null);
                 } else flagEmail = true;
-                if (etEmail.getText().length() == 0){
+                if (etEmail.getText().length() == 0) {
                     flagEmail = false;
                     etEmail.setError(null);
                 }
@@ -144,6 +145,9 @@ public class SignUpFragment extends Fragment {
                     if (response.code() == 307) {
                         RegisterResponse registerResponse = response.body();
                         Toast.makeText(getContext(), "Registered successfully.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), TasksActivity.class);
+                        intent.putExtra("token", response.body().getAccess_token());
+                        startActivity(intent);
                     } else if (response.code() == 400) {
                         Toast.makeText(getContext(), "User already exists.", Toast.LENGTH_LONG).show();
                     }
@@ -154,7 +158,8 @@ public class SignUpFragment extends Fragment {
                     Toast.makeText(getContext(), "No connection.f", Toast.LENGTH_SHORT).show();
                 }
             });
-        }else Toast.makeText(getContext(),"One or more fields is invalid.",Toast.LENGTH_SHORT).show();
+        } else
+            Toast.makeText(getContext(), "One or more fields is invalid.", Toast.LENGTH_SHORT).show();
     }
 
 }

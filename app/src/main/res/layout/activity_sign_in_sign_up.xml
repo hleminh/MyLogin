@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.hoang.mylogin.activities.MainActivity"
+    tools:context="com.example.hoang.mylogin.activities.SignInSignUpActivity"
     android:background="#353646">
 
     <android.support.design.widget.TabLayout

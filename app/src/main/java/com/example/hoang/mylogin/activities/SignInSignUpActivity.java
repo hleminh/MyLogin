@@ -11,7 +11,7 @@ import com.example.hoang.mylogin.R;
 import com.example.hoang.mylogin.fragments.SignInFragment;
 import com.example.hoang.mylogin.fragments.SignUpFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class SignInSignUpActivity extends AppCompatActivity {
     private SignUpFragment signUpFragment;
     private SignInFragment signInFragment;
     private TabLayout tabLayout;
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sign_in_sign_up);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("SIGN IN"));
         tabLayout.addTab(tabLayout.newTab().setText("SIGN UP"));

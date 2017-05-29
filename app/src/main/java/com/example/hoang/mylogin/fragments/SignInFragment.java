@@ -2,6 +2,7 @@ package com.example.hoang.mylogin.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -11,11 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hoang.mylogin.R;
+import com.example.hoang.mylogin.activities.TasksActivity;
 import com.example.hoang.mylogin.networks.LoginRequest;
 import com.example.hoang.mylogin.networks.LoginResponse;
 import com.example.hoang.mylogin.networks.LoginService;
@@ -77,6 +77,9 @@ public class SignInFragment extends Fragment {
                         if (cbRemember.isChecked()) {
                             savePref(etUsername.getText().toString(), etPassword.getText().toString());
                         }
+                        Intent intent = new Intent(getActivity(), TasksActivity.class);
+                        intent.putExtra("token", response.body().getAccess_token());
+                        startActivity(intent);
                     }
                 }
                 if (response.code() == 401) {
@@ -100,13 +103,13 @@ public class SignInFragment extends Fragment {
         editor.commit();
     }
 
-    private void loadPref(){
+    private void loadPref() {
         SharedPreferences sharedPreferences = SignInFragment.this.getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
         etUsername.setText(sharedPreferences.getString("username", ""));
         etPassword.setText(sharedPreferences.getString("password", ""));
         System.out.println(etUsername.getText());
         System.out.println(etPassword.getText());
-        if(!etUsername.getText().toString().equals("") && !etPassword.getText().toString().equals("")){
+        if (!etUsername.getText().toString().equals("") && !etPassword.getText().toString().equals("")) {
             cbRemember.setChecked(true);
         }
     }

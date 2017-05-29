@@ -3,4 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="paynesgrey">#353646</color>
+    <color name="white">#FFFEFE</color>
+    <color name="bittersweet">#FF6059</color>
+    <color name="havelockblue">#507CC0</color>
+    <color name="shipcove">#76809B</color>
+    <color name="linkwater">#CBD0D3</color>
 </resources>
