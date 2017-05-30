@@ -1,6 +1,7 @@
 package com.example.hoang.mylogin.fragments;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,6 +36,7 @@ public class SignInFragment extends Fragment {
     private TextInputEditText etPassword;
     private CheckBox cbRemember;
     private Button btLogin;
+    private ProgressDialog progressDialog;
 
     public SignInFragment() {
         // Required empty public constructor
@@ -57,10 +59,14 @@ public class SignInFragment extends Fragment {
             }
         });
         loadPref();
+        progressDialog = new ProgressDialog(getContext());
         return view;
     }
 
     private void login() {
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Processing...");
+        progressDialog.show();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://a-task.herokuapp.com/api/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -77,12 +83,14 @@ public class SignInFragment extends Fragment {
                         if (cbRemember.isChecked()) {
                             savePref(etUsername.getText().toString(), etPassword.getText().toString());
                         }
+                        if (progressDialog.isShowing()) progressDialog.dismiss();
                         Intent intent = new Intent(getActivity(), TasksActivity.class);
                         intent.putExtra("token", response.body().getAccess_token());
                         startActivity(intent);
                     }
                 }
                 if (response.code() == 401) {
+                    if (progressDialog.isShowing()) progressDialog.dismiss();
                     LoginResponse loginResponse = response.body();
                     Toast.makeText(getContext(), "Invalid credentials", Toast.LENGTH_SHORT).show();
                 }
@@ -90,6 +98,7 @@ public class SignInFragment extends Fragment {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
+                if (progressDialog.isShowing()) progressDialog.dismiss();
                 Toast.makeText(getContext(), "No connection", Toast.LENGTH_SHORT).show();
             }
         });

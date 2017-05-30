@@ -1,6 +1,7 @@
 package com.example.hoang.mylogin.fragments;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -39,6 +40,7 @@ public class SignUpFragment extends Fragment {
     private boolean flagPassword = false;
     private boolean flagUsername = false;
     private boolean flagEmail = false;
+    private ProgressDialog progressDialog;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -49,6 +51,7 @@ public class SignUpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        progressDialog = new ProgressDialog(getContext());
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
         etUsername = (TextInputEditText) view.findViewById(R.id.et_username);
         etUsername.addTextChangedListener(new TextWatcher() {
@@ -133,6 +136,9 @@ public class SignUpFragment extends Fragment {
 
     private void register() {
         if (flagUsername && flagPassword) {
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Processing...");
+            progressDialog.show();
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://a-task.herokuapp.com/api/")
                     .addConverterFactory(GsonConverterFactory.create())
@@ -144,18 +150,21 @@ public class SignUpFragment extends Fragment {
                 public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
                     if (response.code() == 307) {
                         RegisterResponse registerResponse = response.body();
-                        Toast.makeText(getContext(), "Registered successfully.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Registered successfully. You will be automatically logged in.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity(), TasksActivity.class);
                         intent.putExtra("token", response.body().getAccess_token());
+                        if (progressDialog.isShowing()) progressDialog.dismiss();
                         startActivity(intent);
                     } else if (response.code() == 400) {
+                        if (progressDialog.isShowing()) progressDialog.dismiss();
                         Toast.makeText(getContext(), "User already exists.", Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<RegisterResponse> call, Throwable t) {
-                    Toast.makeText(getContext(), "No connection.f", Toast.LENGTH_SHORT).show();
+                    if (progressDialog.isShowing()) progressDialog.dismiss();
+                    Toast.makeText(getContext(), "No connection.", Toast.LENGTH_SHORT).show();
                 }
             });
         } else
